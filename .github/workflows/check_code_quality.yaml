@@ -1,0 +1,30 @@
+name: Run Black
+on: pull_request
+jobs:
+  black:
+    runs-on: ubuntu-22.04
+    steps: 
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+      with:
+        python-version: 3.10
+      - run: |
+        python -m pip install --upgrade pip
+        pip install black
+      - run: |
+        black --check --verbose .
+
+name: Run isort
+on:
+  - push
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: 3.8
+      - uses: isort/isort-action@master
+        with:
+            requirementsFiles: "requirements.txt"
