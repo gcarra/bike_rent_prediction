@@ -1,8 +1,11 @@
 """ This module contains functions to load data """
 
 from pathlib import Path
+
 import requests
+
 from src.path import DATA_DIR
+
 
 def download_dataset() -> Path:
     """Download the dataset and save it in the data folder as csv file"""
