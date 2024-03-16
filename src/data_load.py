@@ -1,15 +1,16 @@
 """ This module contains functions to load data """
-from pathlib import Path
-from src.path import DATA_DIR
-import requests
 
+from pathlib import Path
+import requests
+from src.path import DATA_DIR
 
 def download_dataset() -> Path:
+    """Download the dataset and save it in the data folder as csv file"""
     URL = "https://www.kaggle.com/datasets/archit9406/bike-sharing/download?datasetVersionNumber=1"
-    response = requests.get(URL)
+    response = requests.get(URL, timeout=40)
     if response.status_code == 200:
         path = DATA_DIR / "raw_data.csv"
-        open(path, "wb").write(response.content)
+        with open(path, "wb") as file:
+            file.write(response.content)
         return path
-    else:
-        raise Exception(f"{URL} is not available")
+    raise Exception(f"{URL} is not available")
