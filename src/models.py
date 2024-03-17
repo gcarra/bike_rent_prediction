@@ -2,6 +2,7 @@
 
 import pandas as pd
 import numpy as np
+import xgboost as xgb
 
 class BaselineModel:
     """
@@ -19,14 +20,17 @@ class BaselineModel:
         y_train = y_train.copy()
         X_temp["weekday"] = (X_temp["datetime"]).dt.weekday
         Xy = X_temp.join(y_train)
-        self.predictor = Xy.groupby("weekday")["count"].median().reset_index() 
+        self.predictor = Xy.groupby("weekday")["count"].median().reset_index()
+        self.predictor = self.predictor.rename(columns={'count': 'pred_count'}) 
 
 
     def predict(self, X_test: pd.DataFrame) -> np.array:
         """This fonction predict using the predictor got
         by fitting """
-        weekday = X_test["datetime"].dt.weekday
+        X_test["weekday"] = X_test["datetime"].dt.weekday
 
-        return  self.predictor.loc[self.predictor["weekday"] == weekday]["count"].item()
+        X_test = X_test.merge(self.predictor, how = 'left', on = "weekday")
+
+        return  X_test["pred_count"]
     
 
