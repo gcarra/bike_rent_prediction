@@ -25,20 +25,32 @@ def cleaning_data(raw_data: pd.DataFrame) -> Tuple[pd.DataFrame, pd.Series]:
     cleaned_data["workingday"] = cleaned_data["workingday"].astype("bool")
     cleaned_data["weather"] = cleaned_data["weather"].astype("category")
 
+    # sort values by datetime
+    cleaned_data = cleaned_data.sort_values(by="datetime")
+
+    # define target and feature dataframe
     target = cleaned_data["count"]
     features = cleaned_data.drop(["count"], axis=1).copy()
 
     return features, target
 
 
+def split_data(features: pd.DataFrame, target: pd.Series, ratio: float):
+    """This fonction split data in train and test set
+    ratio : ratio of data in train set"""
+    features_train, features_test = np.split(features, [int(ratio * len(features))])
+    target_train, target_test = np.split(target, [int(ratio * len(target))])
+    return features_train, features_test, target_train, target_test
+
+
 def feature_engineering(features: pd.DataFrame) -> pd.DataFrame:
     """function in charge of the feature engineering"""
     # Feature engineering 1: from the feature "datetime"
     # we create four other features: year, month, day, hour
-    features["Year"] = pd.to_datetime(features["datetime"]).dt.year
-    features["Month"] = pd.to_datetime(features["datetime"]).dt.month
-    features["Day"] = pd.to_datetime(features["datetime"]).dt.weekday
-    features["Hour"] = pd.to_datetime(features["datetime"]).dt.hour
+    features["Year"] = (features["datetime"]).dt.year
+    features["Month"] = (features["datetime"]).dt.month
+    features["Day"] = (features["datetime"]).dt.weekday
+    features["Hour"] = (features["datetime"]).dt.hour
 
     # Feature engineering 2: from the features month, day, hours we create cyclical features
     features["hour_sin"] = np.sin(features.Hour * (2.0 * np.pi / 24))
@@ -59,7 +71,7 @@ def feature_engineering(features: pd.DataFrame) -> pd.DataFrame:
         "Month",
         "Day",
     ]
-    features = features.drop(columns_to_drop, axis=1)
+    features = features.drop(columns_to_drop, axis=1).copy()
     return features
 
 
