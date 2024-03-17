@@ -20,7 +20,7 @@ def cleaning_data(raw_data: pd.DataFrame) -> Tuple[pd.DataFrame, pd.Series]:
     cleaned_data["datetime"] = pd.to_datetime(raw_data["datetime"])
     # convert to categorical data
     cleaned_data["holiday"] = cleaned_data["holiday"].astype("bool")
-    cleaned_data["working_day"] = cleaned_data["working_day"].astype("bool")
+    cleaned_data["workingday"] = cleaned_data["workingday"].astype("bool")
     cleaned_data["weather"] = cleaned_data["weather"].astype("category")
 
     target = cleaned_data["count"]
@@ -53,7 +53,7 @@ def feature_engineering(features: pd.DataFrame) -> pd.DataFrame:
         "windspeed",
         "registered",
         "Hour",
-        "Season",
+        "season",
         "Month",
         "Day",
     ]
