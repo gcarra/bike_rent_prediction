@@ -4,10 +4,12 @@ from typing import Tuple
 
 import numpy as np
 import pandas as pd
-from sklearn.compose import (ColumnTransformer, make_column_selector,
-                             make_column_transformer)
-from sklearn.preprocessing import (OneHotEncoder,
-                                   RobustScaler)
+from sklearn.compose import (
+    ColumnTransformer,
+    make_column_selector,
+    make_column_transformer,
+)
+from sklearn.preprocessing import OneHotEncoder, RobustScaler
 
 
 def cleaning_data(raw_data: pd.DataFrame) -> Tuple[pd.DataFrame, pd.Series]:
@@ -62,12 +64,12 @@ def feature_engineering(features: pd.DataFrame) -> pd.DataFrame:
 
 
 def get_preprocessor_pipeline() -> ColumnTransformer:
-    """ The function create the Column transformer of the
-     preprocessing process """
+    """The function create the Column transformer of the
+    preprocessing process"""
 
     preprocessor = make_column_transformer(
         (RobustScaler(), make_column_selector(dtype_include=np.number)),
-        (OneHotEncoder(), make_column_selector(dtype_exclude=np.number))
+        (OneHotEncoder(), make_column_selector(dtype_exclude=np.number)),
     )
 
     return preprocessor
