@@ -72,7 +72,7 @@ def feature_engineering(features: pd.DataFrame) -> pd.DataFrame:
         "Month",
         "Day",
     ]
-    features = features.drop(columns_to_drop, axis=1)
+    features = features.drop(columns_to_drop, axis=1).copy()
     return features
 
 
