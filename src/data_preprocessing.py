@@ -35,8 +35,7 @@ def cleaning_data(raw_data: pd.DataFrame) -> Tuple[pd.DataFrame, pd.Series]:
     return features, target
 
 
-def split_data(
-    features: pd.DataFrame, target: pd.Series, ratio: float ):
+def split_data(features: pd.DataFrame, target: pd.Series, ratio: float):
     """This fonction split data in train and test set
     ratio : ratio of data in train set"""
     features_train, features_test = np.split(features, [int(ratio * len(features))])
