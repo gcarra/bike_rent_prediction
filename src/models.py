@@ -1,7 +1,12 @@
-""" In this module we define the different models"""
+""" In this module we define the different ML models and pipelines """
 
 import pandas as pd
 import numpy as np
+import lightgbm as lgb
+import xgboost as xgb
+from sklearn.pipeline import Pipeline, make_pipeline
+
+from src.data_preprocessing import get_preprocessor_pipeline
 
 
 class BaselineModel:
@@ -32,3 +37,21 @@ class BaselineModel:
         X_test = X_test.merge(self.predictor, how="left", on="weekday")
 
         return X_test["pred_count"]
+
+
+def get_xgb_pipeline(**hyperparams) -> Pipeline:
+    """Getting the xgboost pipeline"""
+    # preprocessor
+    preprocessor = get_preprocessor_pipeline()
+
+    # sklearn pipeline
+    return make_pipeline(preprocessor, xgb.XGBRegressor(**hyperparams))
+
+
+def get_LGBM_pipeline(**hyperparams) -> Pipeline:
+    """Getting the xgboost pipeline"""
+    # preprocessor
+    preprocessor = get_preprocessor_pipeline()
+
+    # sklearn pipeline
+    return make_pipeline(preprocessor, lgb.LGBMRegressor(**hyperparams))
