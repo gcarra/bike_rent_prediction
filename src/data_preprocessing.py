@@ -45,6 +45,9 @@ def split_data(features: pd.DataFrame, target: pd.Series, ratio: float):
     return features_train, features_test, target_train, target_test
 
 
+
+
+
 def feature_engineering(features: pd.DataFrame, cyclical_values: bool = True, drop_cols: bool = True) -> pd.DataFrame:
     """function in charge of the feature engineering"""
     # Feature engineering 1: from the feature "datetime"
