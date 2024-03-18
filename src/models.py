@@ -32,3 +32,5 @@ class BaselineModel:
         X_test = X_test.merge(self.predictor, how="left", on="weekday")
 
         return X_test["pred_count"]
+
+
