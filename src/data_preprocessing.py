@@ -45,28 +45,46 @@ def split_data(features: pd.DataFrame, target: pd.Series, ratio: float):
     return features_train, features_test, target_train, target_test
 
 
+class feature_engineering :
+    """Class in charge of the feature engineering.
+    We define 3 methods
+        Parameters
+        ----------
+        self.features: pd.Dataframe
+        
+        Returns
+        -------
+        None    
+    
+    """
 
+    
+    def define_exra_features(self, features: pd.DataFrame):
+        """ 
+        Feature engineering 1: from the feature "datetime"
+        we create four other features: year, month, day, hour
+        """
+        features["Month"] = (features["datetime"]).dt.month
+        features["Year"] = (features["datetime"]).dt.year
+        features["Weekday"] = (features["datetime"]).dt.weekday
+        features["Hour"] = (features["datetime"]).dt.hour
 
+        return features
 
-def feature_engineering(features: pd.DataFrame, cyclical_values: bool = True, drop_cols: bool = True) -> pd.DataFrame:
-    """function in charge of the feature engineering"""
-    # Feature engineering 1: from the feature "datetime"
-    # we create four other features: year, month, day, hour
-    features["Year"] = (features["datetime"]).dt.year
-    features["Month"] = (features["datetime"]).dt.month
-    features["Weekday"] = (features["datetime"]).dt.weekday
-    features["Hour"] = (features["datetime"]).dt.hour
-
-    if cyclical_values:
-        # Feature engineering 2: from the features month, day, hours we create cyclical features
-        features["hour_sin"] = np.sin(features.Hour * (2.0 * np.pi / 24))
+    def transform_cyclical_values(self, features: pd.DataFrame):
+        """ Feature engineering 2: from the features month, day, hours
+          we create cyclical features """
         features["hour_cos"] = np.cos(features.Hour * (2.0 * np.pi / 24))
         features["month_sin"] = np.sin((features.Month - 1) * (2.0 * np.pi / 12))
         features["month_cos"] = np.cos((features.Month - 1) * (2.0 * np.pi / 12))
         features["day_cos"] = np.cos((features.Weekday) * (2.0 * np.pi / 7))
+        features["hour_sin"] = np.sin(features.Hour * (2.0 * np.pi / 24))
         features["day_sin"] = np.sin((features.Weekday) * (2.0 * np.pi / 7))
 
-    if drop_cols:
+        return features
+    
+
+    def drop_cols(self, features: pd.DataFrame):
         columns_to_drop = [
             "datetime",
             "casual",
@@ -78,8 +96,8 @@ def feature_engineering(features: pd.DataFrame, cyclical_values: bool = True, dr
             "Month",
             "Weekday",
         ]
-        features = features.drop(columns_to_drop, axis=1).copy()
-    return features
+        return features.drop(columns_to_drop, axis=1).copy()
+
 
 
 def get_preprocessor_pipeline() -> ColumnTransformer:
