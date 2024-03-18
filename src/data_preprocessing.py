@@ -12,7 +12,9 @@ from sklearn.compose import (
 from sklearn.preprocessing import OneHotEncoder, RobustScaler
 
 
-def cleaning_data(raw_data: pd.DataFrame, split: bool = True) -> Tuple[pd.DataFrame, pd.Series]:
+def cleaning_data(
+    raw_data: pd.DataFrame, split: bool = True
+) -> Tuple[pd.DataFrame, pd.Series]:
     """This function is responsible for dataset cleaning"""
 
     # drop_duplicates
@@ -45,22 +47,21 @@ def split_data(features: pd.DataFrame, target: pd.Series, ratio: float):
     return features_train, features_test, target_train, target_test
 
 
-class feature_engineering :
+class feature_engineering:
     """Class in charge of the feature engineering.
     We define 3 methods
         Parameters
         ----------
         self.features: pd.Dataframe
-        
+
         Returns
         -------
-        None    
-    
+        None
+
     """
 
-    
     def define_exra_features(self, features: pd.DataFrame):
-        """ 
+        """
         Feature engineering 1: from the feature "datetime"
         we create four other features: year, month, day, hour
         """
@@ -72,8 +73,8 @@ class feature_engineering :
         return features
 
     def transform_cyclical_values(self, features: pd.DataFrame):
-        """ Feature engineering 2: from the features month, day, hours
-          we create cyclical features """
+        """Feature engineering 2: from the features month, day, hours
+        we create cyclical features"""
         features["hour_cos"] = np.cos(features.Hour * (2.0 * np.pi / 24))
         features["month_sin"] = np.sin((features.Month - 1) * (2.0 * np.pi / 12))
         features["month_cos"] = np.cos((features.Month - 1) * (2.0 * np.pi / 12))
@@ -82,7 +83,6 @@ class feature_engineering :
         features["day_sin"] = np.sin((features.Weekday) * (2.0 * np.pi / 7))
 
         return features
-    
 
     def drop_cols(self, features: pd.DataFrame):
         columns_to_drop = [
@@ -97,7 +97,6 @@ class feature_engineering :
             "Weekday",
         ]
         return features.drop(columns_to_drop, axis=1).copy()
-
 
 
 def get_preprocessor_pipeline() -> ColumnTransformer:

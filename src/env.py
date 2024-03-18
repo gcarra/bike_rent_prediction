@@ -6,18 +6,36 @@
 LEGEND_TO_MODIFY = ["Weekday", "season", "weather"]
 # Dictionnary allowing streamlit line plot legend modification
 PLOT_LEGEND_DICT = {
-     "Weekday" : ['Monday','Tuesday', 'Wednesday', 
-                  'Thursday', 'Friday', 'Saturday', 'Sunday' ],
-     "season" : ['Winter','Spring', 'Summer', 'Autumn'],
-     "weather" : ['Clear to cloudy', 'Foggy', 'Light rain or snow',
-                   'Heavy showers or snow']
+    "Weekday": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday",
+    ],
+    "season": ["Winter", "Spring", "Summer", "Autumn"],
+    "weather": [
+        "Clear to cloudy",
+        "Foggy",
+        "Light rain or snow",
+        "Heavy showers or snow",
+    ],
 }
 #
-LINE_PLOT_VARS = ['Weekday','season', 'holiday', 'workingday',
-                  'weather', 'Year', 'Month']
+LINE_PLOT_VARS = [
+    "Weekday",
+    "season",
+    "holiday",
+    "workingday",
+    "weather",
+    "Year",
+    "Month",
+]
 
 VAR_DOC = {
-     "Weekday" : "0: Monday, 1: Tuesday , 2: Wednesday, 3: Thursday, 4: Friday, 5: Saturday, 6: Sunday" ,
-     "season" : "1: Winter, 2: Spring, 3: Summer, 4: Autumn",
-     "weather" : "1: Clear to cloudy, 2: Foggy, 3: Light rain or snow, 4: Heavy showers or snow"
+    "Weekday": "0: Monday, 1: Tuesday , 2: Wednesday, 3: Thursday, 4: Friday, 5: Saturday, 6: Sunday",
+    "season": "1: Winter, 2: Spring, 3: Summer, 4: Autumn",
+    "weather": "1: Clear to cloudy, 2: Foggy, 3: Light rain or snow, 4: Heavy showers or snow",
 }
