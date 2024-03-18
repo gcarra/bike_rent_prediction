@@ -25,7 +25,7 @@ def plot_hour_vs_var(data, var, agg_method = "median"):
         "count": agg_method
     }).reset_index()   
     fig = px.line(grouped_data, x=grouped_data.Hour, y='count', color=var, 
-                markers=True, labels={'Hour': f'{agg_method} hourly number of users'})
+                markers=True, labels={'count':f'{agg_method} hourly number of users'})
     if var in LEGEND_TO_MODIFY:
         for i, new_name in enumerate(PLOT_LEGEND_DICT[var]):
             fig.data[i].name = new_name
