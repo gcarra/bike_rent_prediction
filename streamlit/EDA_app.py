@@ -12,23 +12,54 @@ raw_data = pd.read_csv(DATA_DIR / "raw_data.csv")
 
 cleaned_data = cleaning_data(raw_data, split = False)
 data = feature_engineering(cleaned_data, cyclical_values = False, drop_cols = False)
-print(data['Year'])
+#data["datetime"] = data["datetime"].dt.tz_localize(None)
 
 st.set_page_config(layout="wide")
+
 
 # title
 st.title(f'Bike sharing demand ')
 st.header('An exploratory data analysis tool')
 
+####
+
+
+
 #####
 sql_query = st.text_area(label = "Write a SQL query. The table name is: data")
 tab1, tab2 = st.tabs(["'data' table", "queried table"])
 with tab1 :
-        st.write(data)
+    st.dataframe(data,
+                column_config={
+    "Year": st.column_config.NumberColumn(
+        help="Number of stars on GitHub",
+        format="%d"),
+    "holiday": st.column_config.CheckboxColumn(
+        help="It indicates whether the day is a school holiday"),
+    "season": st.column_config.NumberColumn(
+        help="1 = Spring,  2 = Summer, 3 = Autumn, 4 = Winter"),
+    "weather": st.column_config.NumberColumn(
+        help= " 1 = Clear to cloudy, 2 = Foggy, 3 = Light rain or snow, 4 = Heavy showers or snow"
+                   ),
+    "temp": st.column_config.NumberColumn(
+        help="Temperature in Celsius"),   
+    "atemp": st.column_config.NumberColumn(
+        help="Feeling temperature in Celsius"),
+    "casual": st.column_config.NumberColumn(
+        help="Count of casual users"),   
+    "registered": st.column_config.NumberColumn(
+        help="Count of registered users"),
+    "count": st.column_config.NumberColumn(
+        help="Hourly number of users"),
+    "Weekday": st.column_config.NumberColumn(
+        help="0 = Monday, 1 = Tuesday, 2 = Wednesday, 3 = Thursday, 4 = Friday, 5 = Saturday, 6 = Sunday")
+                },
+    hide_index=True
+    )
 with tab2:
     try:
         result = duckdb.query(sql_query).df()
-        st.write(result)
+        st.dataframe(result)
     except:
         st.write("The SQL query is empty or incorrect")
 
