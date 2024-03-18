@@ -2,6 +2,7 @@
 import streamlit as st
 from src.path import DATA_DIR
 import duckdb
+from src.plots import *
 import pandas as pd
 from src.data_preprocessing import cleaning_data, feature_engineering
 
@@ -32,20 +33,22 @@ with tab2:
 ####
 with st.sidebar:
     option = st.selectbox(
-        "Which variable would you like to analyse ?",
-        ("Weekday", "holiday", "year"),
+        "Variable would you lke to analyse ?",
+        data.drop(columns = ["Hour", "count"], axis = 1).columns,
         index = None,
         placeholder="Select variable"
     )
 
+col1, col2 = st.columns(2)
+selected_agg = col1.radio("Aggregation method", ["mean", "median"])
+var = col2.selectbox(
+        "Variable to analyse ?",
+        data.drop(columns = ["Hour", "count", "datetime"], axis = 1).columns,
+        index = 0,
+        placeholder="Select variable")
+
+
 
 with st.spinner(text="Plotting data"):
-   
-   
-
-
-    
-
+    fig = plot_hour_vs_var(data, var, agg_method = selected_agg )
     st.plotly_chart(fig, theme="streamlit", use_container_width=True, width=1000)
-        
-    progress_bar.progress(6/N_STEPS)
