@@ -4,6 +4,8 @@ from src.path import DATA_DIR
 import duckdb
 from src.plots import *
 import pandas as pd
+from src.env import LINE_PLOT_VARS
+
 from src.data_preprocessing import cleaning_data, feature_engineering
 
 raw_data = pd.read_csv(DATA_DIR / "raw_data.csv")  
@@ -39,16 +41,19 @@ with st.sidebar:
         placeholder="Select variable"
     )
 
+
+st.divider()
+st.markdown(f"### Fig 1. Hourly number of users") 
 col1, col2 = st.columns(2)
 selected_agg = col1.radio("Aggregation method", ["mean", "median"])
 var = col2.selectbox(
-        "Variable to analyse ?",
-        data.drop(columns = ["Hour", "count", "datetime"], axis = 1).columns,
+        "Categorical variable to analyse ?",
+        LINE_PLOT_VARS,
         index = 0,
         placeholder="Select variable")
 
 
-
-with st.spinner(text="Plotting data"):
+with st.spinner(text="Plotting data"):   
+    
     fig = plot_hour_vs_var(data, var, agg_method = selected_agg )
     st.plotly_chart(fig, theme="streamlit", use_container_width=True, width=1000)
