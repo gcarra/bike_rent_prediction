@@ -5,29 +5,39 @@ import duckdb
 from src.plots import *
 import pandas as pd
 from src.env import LINE_PLOT_VARS
-
 from src.data_preprocessing import cleaning_data, feature_engineering
 
 raw_data = pd.read_csv(DATA_DIR / "raw_data.csv")  
 
 cleaned_data = cleaning_data(raw_data, split = False)
 data = feature_engineering(cleaned_data, cyclical_values = False, drop_cols = False)
-#data["datetime"] = data["datetime"].dt.tz_localize(None)
+
 
 st.set_page_config(layout="wide")
 
 
 # title
-st.title(f'Bike sharing demand ')
+st.title('Bike sharing dataset ')
 st.header('An exploratory data analysis tool')
-
+st.markdown(""" This app is a simple tool allowing
+            analysts to make a first exploratory data analysis
+            of the bike sharing dataset.
+        """
+)
+st.divider()
 ####
 
-st.dataframe(filter_dataframe(data))
+filter_data, modify = filter_dataframe(data)
+
 
 #####
-sql_query = st.text_area(label = "Write a SQL query. The table name is: data")
-tab1, tab2 = st.tabs(["'data' table", "queried table"])
+st.markdown("### The dataset")
+sql_query = st.text_area(label = "You can write a SQL query below. The table name is: data")
+if modify : 
+    tab0, tab1, tab2 = st.tabs(["filtered 'data' table","'data' table", "queried table"])
+    with tab0:
+        st.dataframe(filter_data)
+else : tab1, tab2 = st.tabs(["'data' table", "queried table"])
 with tab1 :
     st.dataframe(data,
                 column_config={
@@ -37,7 +47,7 @@ with tab1 :
     "holiday": st.column_config.CheckboxColumn(
         help="It indicates whether the day is a school holiday"),
     "season": st.column_config.NumberColumn(
-        help="1 = Spring,  2 = Summer, 3 = Autumn, 4 = Winter"),
+        help="1 = Winter,  2 = Spring, 3 = Summer, 4 = Autumn"),
     "weather": st.column_config.NumberColumn(
         help= " 1 = Clear to cloudy, 2 = Foggy, 3 = Light rain or snow, 4 = Heavy showers or snow"
                    ),
@@ -64,13 +74,7 @@ with tab2:
         st.write("The SQL query is empty or incorrect")
 
 ####
-with st.sidebar:
-    option = st.selectbox(
-        "Variable would you lke to analyse ?",
-        data.drop(columns = ["Hour", "count"], axis = 1).columns,
-        index = None,
-        placeholder="Select variable"
-    )
+
 
 
 st.divider()
@@ -87,4 +91,23 @@ var = col2.selectbox(
 with st.spinner(text="Plotting data"):   
     
     fig = plot_hour_vs_var(data, var, agg_method = selected_agg )
+    st.plotly_chart(fig, theme="streamlit", use_container_width=True, width=1000)
+
+
+st.divider()
+
+st.markdown(f"### Fig. 2 Daily number of users")
+col2_1, col2_2 = st.columns(2)
+selected_agg = col2_1.radio("Aggregation method", ["mean", "median"],  key = "fig2")
+var = col2_2.selectbox(
+        "Categorical variable to analyse ?",
+        LINE_PLOT_VARS,
+        index = 0,
+        placeholder="Select variable",
+        key = "Fig2")
+
+
+with st.spinner(text="Plotting data"):   
+    
+    fig = plot_var_vs_count(data, var, selected_agg)
     st.plotly_chart(fig, theme="streamlit", use_container_width=True, width=1000)
