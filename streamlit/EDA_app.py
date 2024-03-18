@@ -23,7 +23,7 @@ st.header('An exploratory data analysis tool')
 
 ####
 
-
+st.dataframe(filter_dataframe(data))
 
 #####
 sql_query = st.text_area(label = "Write a SQL query. The table name is: data")
