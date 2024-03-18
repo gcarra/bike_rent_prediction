@@ -16,10 +16,8 @@ PLOT_LEGEND_DICT = {
 LINE_PLOT_VARS = ['Weekday','season', 'holiday', 'workingday',
                   'weather', 'Year', 'Month']
 
-LABEL_MAP = {
-     "Weekday" : {0 :'Monday', 1 :'Tuesday', 2: 'Wednesday', 
-                 3: 'Thursday', 4: 'Friday', 5:'Saturday', 6:'Sunday' },
-     "season" : {2:'Spring', 3:'Summer', 4:'Autumn', 1:'Winter'},
-     "weather" : {1:'Clear to cloudy', 2:'Foggy', 3:'Light rain or snow',
-                   4:'Heavy showers or snow'}
+VAR_DOC = {
+     "Weekday" : "0: Monday, 1: Tuesday , 2: Wednesday, 3: Thursday, 4: Friday, 5: Saturday, 6: Sunday" ,
+     "season" : "1: Winter, 2: Spring, 3: Summer, 4: Autumn",
+     "weather" : "1: Clear to cloudy, 2: Foggy, 3: Light rain or snow, 4: Heavy showers or snow"
 }
