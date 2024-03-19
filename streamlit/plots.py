@@ -17,14 +17,14 @@ import streamlit as st
 class Displayer:
     """This class allow to define methods to produce plots and filter UI"""
 
-    def __init__(self, DATA_DIR, LINE_PLOT_VARS, PLOT_LEGEND_DICT):
+    def __init__(self, path, LINE_PLOT_VARS, PLOT_LEGEND_DICT):
 
-        self.path = DATA_DIR / "raw_data.csv"
+        self.path = path
         self.line_plot_vars = LINE_PLOT_VARS
         self.plot_legend_dict = PLOT_LEGEND_DICT
         self.legend_to_modify = LEGEND_TO_MODIFY
 
-    def load_data(self):
+    def load_data(self, path):
         """
         Load and process data of the Bike Sharing dataset.
 
@@ -39,9 +39,8 @@ class Displayer:
         """
         raw_data = pd.read_csv(self.path)
         cleaned_data = cleaning_data(raw_data, split=False)
-        self.data = feature_engineering(
-            cleaned_data, cyclical_values=False, drop_cols=False
-        )
+        process = feature_engineering()
+        self.data = process(cleaned_data)
 
     def widgets_hour_vs_var(self):
         """
