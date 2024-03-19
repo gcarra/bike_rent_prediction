@@ -29,45 +29,45 @@ class EdaApp(Displayer):
         self.path = path
         self.line_plot_vars = LINE_PLOT_VARS
         self.plot_legend_dict = PLOT_LEGEND_DICT
-        self.legend_to_modify = LEGEND_TO_MODIFY
         self.var_doc = VAR_DOC
+        self.legend_to_modify = LEGEND_TO_MODIFY
 
         st.set_page_config(layout="wide")
 
         # load data
-        self.load_data()
+        data = self.load_data()
 
         # display App title and description
         self.title_and_description()
 
         # display filter widget
-        self.widget_filter()
+        modify = self.widget_filter()
 
-        # display the filter fonctionnality in the side in the side bar
-        self.filter_dataframe()
+        # display the filter fonctionnality in the side bar
+        self.filter_dataframe(data, modify)
 
         # config dataframe display
-        self.display_df_config()
+        df_config = self.display_df_config()
 
         # display dataset and sql query entry
-        self.display_dataset_section()
+        self.display_dataset_section(data, df_config, modify)
 
-        # display widgets of figure 1
-        self.widgets_hour_vs_var()
+        # display widgets of figure 1 and return aggregation method and variable chosen
+        var, agg_method = self.widgets_hour_vs_var()
 
         # plot fig 1
-        self.plot_hour_vs_var()
+        fig = self.plot_hour_vs_var(data, agg_method, var)
         st.plotly_chart(
-            self.fig, theme="streamlit", use_container_width=True, width=1000
+            fig, theme="streamlit", use_container_width=True, width=1000
         )
 
         # display widdget fig 2
-        self.widgets_var_vs_count()
+        var_2, agg_method_2 = self.widgets_var_vs_count()
 
         # display plot fig 2
-        self.plot_var_vs_count()
+        fig_2 = self.plot_var_vs_count(data, var_2, agg_method_2)
         st.plotly_chart(
-            self.fig_2, theme="streamlit", use_container_width=True, width=1000
+            fig_2, theme="streamlit", use_container_width=True, width=1000
         )
 
     def title_and_description(self):
@@ -89,11 +89,11 @@ class EdaApp(Displayer):
                 """
         )
 
-    def display_dataset_section(self):
+    def display_dataset_section(self, data, df_config, modify):
         """Display the dataset and the related fonctionnalities
         Parameters
         ----------
-        None
+        data: pd.DataFrame
 
         Returns
         -------
@@ -105,7 +105,7 @@ class EdaApp(Displayer):
                 label="You can write a SQL query below. The table name is: data"
             )
 
-            if self.modify:
+            if modify:
                 tab0, tab1, tab2 = st.tabs(
                     ["filtered 'data' table", "'data' table", "queried table"]
                 )
@@ -113,24 +113,23 @@ class EdaApp(Displayer):
                     try:
                         st.dataframe(
                             self.filter_data,
-                            column_config=self.df_config,
+                            column_config=df_config,
                             hide_index=True,
                         )
                     except:
                         st.dataframe(
-                            self.data, column_config=self.df_config, hide_index=True
+                            data, column_config=df_config, hide_index=True
                         )
             else:
                 tab1, tab2 = st.tabs(["'data' table", "queried table"])
             with tab1:
-                st.dataframe(self.data, column_config=self.df_config, hide_index=True)
+                st.dataframe(data, column_config=df_config, hide_index=True)
             with tab2:
                 try:
-                    data = self.data.copy()
 
-                    self.result = duckdb.query(text_query).df()
+                    result = duckdb.query(text_query).df()
 
-                    st.dataframe(self.result, column_config=self.df_config)
+                    st.dataframe(result, column_config=df_config)
                 except:
                     st.write("The SQL query is empty or incorrect")
 
@@ -143,10 +142,10 @@ class EdaApp(Displayer):
 
         Returns
         -------
-        self.df_config: pandas dictionnary
+        df_config: pandas dictionnary
             Dictionnary allowing to configure st.dataframe
         """
-        self.df_config = {
+        df_config = {
             "Year": st.column_config.NumberColumn(
                 help="Number of stars on GitHub", format="%d"
             ),
@@ -166,7 +165,7 @@ class EdaApp(Displayer):
             "count": st.column_config.NumberColumn(help="Hourly number of users"),
             "Weekday": st.column_config.NumberColumn(help=str(self.var_doc["Weekday"])),
         }
-
+        return df_config
 
 if __name__ == "__main__":
     path = DATA_DIR / "raw_data.csv"
