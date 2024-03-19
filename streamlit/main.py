@@ -21,12 +21,12 @@ class EdaApp(Displayer):
     A Streamlit app
     """
 
-    def __init__(self, DATA_DIR, LINE_PLOT_VARS, PLOT_LEGEND_DICT, VAR_DOC):
+    def __init__(self, path, LINE_PLOT_VARS, PLOT_LEGEND_DICT, VAR_DOC):
         """
         Initialize the app.
         """
 
-        self.path = DATA_DIR / "raw_data.csv"
+        self.path = path
         self.line_plot_vars = LINE_PLOT_VARS
         self.plot_legend_dict = PLOT_LEGEND_DICT
         self.legend_to_modify = LEGEND_TO_MODIFY
@@ -169,4 +169,5 @@ class EdaApp(Displayer):
 
 
 if __name__ == "__main__":
-    EdaApp(DATA_DIR, LINE_PLOT_VARS, PLOT_LEGEND_DICT, VAR_DOC)
+    path = DATA_DIR / "raw_data.csv"
+    EdaApp(path, LINE_PLOT_VARS, PLOT_LEGEND_DICT, VAR_DOC)
