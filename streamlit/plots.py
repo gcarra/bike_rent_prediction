@@ -197,7 +197,7 @@ class Displayer:
 
         with st.sidebar:
             if modify:
-
+                self.filter_data = data.copy()
                 to_filter_columns = st.multiselect("Filter data table on", data.columns)
                 for column in to_filter_columns:
                     left, right = st.columns((1, 20))
@@ -209,7 +209,7 @@ class Displayer:
                             data[column].unique(),
                             default=list(data[column].unique()),
                         )
-                        self.filter_data = data[data[column].isin(user_cat_input)]
+                        self.filter_data = self.filter_data[self.filter_data[column].isin(user_cat_input)]
                     elif is_numeric_dtype(data[column]):
                         _min = float(data[column].min())
                         _max = float(data[column].max())
@@ -221,7 +221,9 @@ class Displayer:
                             value=(_min, _max),
                             step=step,
                         )
-                        self.filter_data = data[data[column].between(*user_num_input)]
+                        self.filter_data = self.filter_data[
+                            self.filter_data[column].between(*user_num_input)
+                            ]
                     elif is_datetime64_any_dtype(data[column]):
                         user_date_input = right.date_input(
                             f"Values for {column}",
@@ -236,13 +238,13 @@ class Displayer:
                             )
                             start_date, end_date = user_date_input
                             self.filter_data = data.loc[
-                                data[column].between(start_date, end_date)
+                                self.filter_data[column].between(start_date, end_date)
                             ]
                     else:
                         user_text_input = right.text_input(
                             f"Substring or value in {column}",
                         )
                         if user_text_input:
-                            self.filter_data = data[
-                                data[column].astype(str).str.contains(user_text_input)
+                            self.filter_data = self.filter_data[
+                                self.filter_data[column].astype(str).str.contains(user_text_input)
                             ]
