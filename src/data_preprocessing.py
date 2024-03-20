@@ -59,6 +59,8 @@ class feature_engineering:
         None
 
     """
+    def __init__(self) -> None:
+        pass
 
     def define_exra_features(self, features: pd.DataFrame):
         """
