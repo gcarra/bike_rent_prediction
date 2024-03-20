@@ -28,10 +28,10 @@ class EdaApp(Displayer):
         """
 
         self.path = path
-        self.line_plot_vars = LINE_PLOT_VARS
-        self.plot_legend_dict = PLOT_LEGEND_DICT
-        self.var_doc = VAR_DOC
-        self.legend_to_modify = LEGEND_TO_MODIFY
+        # LINE_PLOT_VARS = LINE_PLOT_VARS
+        # PLOT_LEGEND_DICT = PLOT_LEGEND_DICT
+        # VAR_DOC = VAR_DOC
+        # self.legend_to_modify = LEGEND_TO_MODIFY
 
         st.set_page_config(layout="wide")
 
@@ -151,8 +151,8 @@ class EdaApp(Displayer):
             "holiday": st.column_config.CheckboxColumn(
                 help="It indicates whether the day is a school holiday"
             ),
-            "season": st.column_config.NumberColumn(help=str(self.var_doc["season"])),
-            "weather": st.column_config.NumberColumn(help=str(self.var_doc["weather"])),
+            "season": st.column_config.NumberColumn(help=VAR_DOC["season"]),
+            "weather": st.column_config.NumberColumn(help=VAR_DOC["weather"]),
             "temp": st.column_config.NumberColumn(help="Temperature in Celsius"),
             "atemp": st.column_config.NumberColumn(
                 help="Feeling temperature in Celsius"
@@ -162,7 +162,7 @@ class EdaApp(Displayer):
                 help="Count of registered users"
             ),
             "count": st.column_config.NumberColumn(help="Hourly number of users"),
-            "Weekday": st.column_config.NumberColumn(help=str(self.var_doc["Weekday"])),
+            "Weekday": st.column_config.NumberColumn(help=VAR_DOC["Weekday"]),
         }
         return df_config
 
