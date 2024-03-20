@@ -56,18 +56,18 @@ class EdaApp(Displayer):
         var, agg_method = self.widgets_hour_vs_var()
 
         # plot fig 1
-        fig = self.plot_hour_vs_var(data, agg_method, var)
+        self.plot_hour_vs_var(data, agg_method, var)
         st.plotly_chart(
-            fig, theme="streamlit", use_container_width=True, width=1000
+            self.fig, theme="streamlit", use_container_width=True, width=1000
         )
 
         # display widdget fig 2
         var_2, agg_method_2 = self.widgets_var_vs_count()
 
         # display plot fig 2
-        fig_2 = self.plot_var_vs_count(data, var_2, agg_method_2)
+        self.plot_var_vs_count(data, var_2, agg_method_2)
         st.plotly_chart(
-            fig_2, theme="streamlit", use_container_width=True, width=1000
+            self.fig_2, theme="streamlit", use_container_width=True, width=1000
         )
 
     def title_and_description(self):
@@ -129,7 +129,10 @@ class EdaApp(Displayer):
 
                     result = duckdb.query(text_query).df()
 
-                    st.dataframe(result, column_config=df_config)
+                    st.dataframe(
+                        result,
+                        column_config=df_config,
+                        hide_index = True)
                 except:
                     st.write("The SQL query is empty or incorrect")
 
