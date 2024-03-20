@@ -10,6 +10,7 @@ from sklearn.compose import (
     make_column_transformer,
 )
 from sklearn.preprocessing import OneHotEncoder, RobustScaler
+from sklearn.model_selection import train_test_split
 
 
 def cleaning_data(
@@ -47,8 +48,9 @@ def split_data(features: pd.DataFrame, target: pd.Series, ratio: float):
     This fonction split data in train and test set
     ratio : ratio of data in train set
     """
-    features_train, features_test = np.split(features, [int(ratio * len(features))])
-    target_train, target_test = np.split(target, [int(ratio * len(target))])
+    features_train, features_test = train_test_split(features, train_size=ratio, shuffle=False)
+    
+    target_train, target_test = train_test_split(target, train_size=ratio, shuffle=False)
 
     return features_train, features_test, target_train, target_test
 
