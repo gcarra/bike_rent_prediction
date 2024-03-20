@@ -15,13 +15,16 @@ from sklearn.preprocessing import OneHotEncoder, RobustScaler
 def cleaning_data(
     raw_data: pd.DataFrame, split: bool = True
 ) -> Tuple[pd.DataFrame, pd.Series]:
-    """This function is responsible for dataset cleaning"""
+    """
+    This function is responsible for dataset cleaning
+    """
 
     # drop_duplicates
     cleaned_data = raw_data.drop_duplicates().copy()
 
     # convert datetime feature in datetime type
     cleaned_data["datetime"] = pd.to_datetime(raw_data["datetime"])
+
     # convert to categorical data
     cleaned_data["holiday"] = cleaned_data["holiday"].astype("bool")
     cleaned_data["workingday"] = cleaned_data["workingday"].astype("bool")
@@ -40,15 +43,19 @@ def cleaning_data(
 
 
 def split_data(features: pd.DataFrame, target: pd.Series, ratio: float):
-    """This fonction split data in train and test set
-    ratio : ratio of data in train set"""
+    """
+    This fonction split data in train and test set
+    ratio : ratio of data in train set
+    """
     features_train, features_test = np.split(features, [int(ratio * len(features))])
     target_train, target_test = np.split(target, [int(ratio * len(target))])
+
     return features_train, features_test, target_train, target_test
 
 
 class feature_engineering:
-    """Class in charge of the feature engineering.
+    """
+    Class in charge of the feature engineering.
     We define 3 methods
         Parameters
         ----------
@@ -57,7 +64,6 @@ class feature_engineering:
         Returns
         -------
         None
-
     """
     def __init__(self) -> None:
         pass
@@ -75,8 +81,10 @@ class feature_engineering:
         return features
 
     def transform_cyclical_values(self, features: pd.DataFrame):
-        """Feature engineering 2: from the features month, day, hours
-        we create cyclical features"""
+        """
+        Feature engineering 2: from the features month, day, hours
+        we create cyclical features
+        """
         features["hour_cos"] = np.cos(features.Hour * (2.0 * np.pi / 24))
         features["month_sin"] = np.sin((features.Month - 1) * (2.0 * np.pi / 12))
         features["month_cos"] = np.cos((features.Month - 1) * (2.0 * np.pi / 12))
@@ -87,6 +95,9 @@ class feature_engineering:
         return features
 
     def drop_cols(self, features: pd.DataFrame):
+        """
+        We define the columns we want to drop and we drop it
+        """
         columns_to_drop = [
             "datetime",
             "casual",
@@ -102,8 +113,10 @@ class feature_engineering:
 
 
 def get_preprocessor_pipeline() -> ColumnTransformer:
-    """The function create the Column transformer of the
-    preprocessing process"""
+    """
+    The function create the Column transformer of the
+    preprocessing process
+    """
 
     preprocessor = make_column_transformer(
         (RobustScaler(), make_column_selector(dtype_include=np.number)),
