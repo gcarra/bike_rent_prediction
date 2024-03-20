@@ -53,7 +53,7 @@ It can be interesting to learn and explore what it can be done by using MLflow i
     - Add data analysis **fonctionalities**
 - **ML toolkit**
     - Define **unit tests**
-    - The cleaning fonction can be developed to better ensure data quality.
+    - The cleaning fonction can be developed to better ensure data quality
     - Add to the feature_engineering class a method adding temporal feature to data: we did not introduce features allowing to account for temporal relationship. However, we can observe that the average number of users increases with time and this feature cannot be neglected
     - From the insights we get by performing a deeper exploratory data analyse there may some interesting methods to add to the feature_engineering class and the get_preprocessor pipeline can be optimized  
     - Add other models that can be worthly to test
