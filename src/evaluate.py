@@ -39,9 +39,9 @@ def evaluate_Baseline(raw_data: pd.DataFrame):
     mean_test_count = target_test.mean()
 
     train_mae = mean_absolute_error(target_train, predictions_train)
-    mean_train_mae = target_train.mean()
+    mean_train_count = target_train.mean()
 
-    return test_mae, mean_test_count, train_mae, mean_train_mae
+    return test_mae, mean_test_count, train_mae, mean_train_count
 
 
 def evaluate_xgb(raw_data: pd.DataFrame, **hyperparams):

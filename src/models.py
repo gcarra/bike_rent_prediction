@@ -13,7 +13,7 @@ class BaselineModel:
     """
     In this baseline model the prediction is defined as following:
     prediction = median(count) on the same weekday observed in training data.
-    Remarque : no feature engineering for this pipeline
+    Remark: no feature engineering for this pipeline
     """
 
     def __init__(self):
@@ -22,10 +22,11 @@ class BaselineModel:
     def fit(self, X_train: pd.DataFrame, y_train: pd.Series):
         """This fonction compute values for the predictor"""
 
-        X_temp = X_train.copy()
-        y_train = y_train.copy()
-        X_temp["weekday"] = (X_temp["datetime"]).dt.weekday
-        Xy = X_temp.join(y_train)
+        # define weekday attribute
+        X_train["weekday"] = (X_train["datetime"]).dt.weekday
+        Xy = X_train.join(y_train)
+        
+        # compute the prediction and rename column
         self.predictor = Xy.groupby("weekday")["count"].median().reset_index()
         self.predictor = self.predictor.rename(columns={"count": "pred_count"})
 

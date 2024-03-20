@@ -7,9 +7,9 @@ The main goal of this project is to build a clean and well structured machine le
 **The project is not perfect nor complete. Feedbacks are more than welcome! :)**
 
 I split the all project in two parts having the following goals:
-- To create an user interface using streamlit allowing analyst to easily explore the Bike sharing dataset.
+- To create an user interface using streamlit allowing analyst to easily explore the Bike sharing dataset
 
-- To create the first building blocks (that I will call ML tookit) allowing:
+- To create the first building blocks (that I will call ML toolkit) allowing:
     1) Machine learning models and pipelines building and training
     2) Model evaluation
     3) Features engineering and model selection
@@ -41,7 +41,6 @@ Here is a brief description of the data:
     - **plot.py**: define the class that will be used in the main file
     - **main.py**: define the class that will produce the app
 - **src**: folder containing files to load and process data, to build, train and evaluate models
-    - **data_load.py**: file to load data
     - **data preprocessing.py**: file to preprocess data
     - **models.py**: file to build models and pipelines
     - **evaluate.py**: file to evaluate th model
