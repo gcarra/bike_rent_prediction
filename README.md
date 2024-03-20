@@ -1,4 +1,4 @@
-# BIKE SHARING DATASET: data exploration and hourly users prediction
+# BIKE SHARING DATASET: building a clean and structure Machine Learning project
 
 
 ## Overview
