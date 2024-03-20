@@ -6,7 +6,7 @@ import pandas as pd
 import plotly.express as px
 from pandas.api.types import is_datetime64_any_dtype, is_numeric_dtype
 from src.data_preprocessing import cleaning_data, feature_engineering
-from src.env import LEGEND_TO_MODIFY, LINE_PLOT_VARS, PLOT_LEGEND_DICT
+from src.parameters import LEGEND_TO_MODIFY, LINE_PLOT_VARS, PLOT_LEGEND_DICT
 
 import streamlit as st
 

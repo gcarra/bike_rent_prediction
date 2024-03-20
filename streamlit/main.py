@@ -2,7 +2,7 @@
 # Absolute import
 import duckdb
 from src.path import DATA_DIR
-from src.env import VAR_DOC
+from src.parameters import VAR_DOC
 
 import streamlit as st
 from plots import Displayer
