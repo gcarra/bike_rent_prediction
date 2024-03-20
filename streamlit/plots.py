@@ -82,14 +82,14 @@ class Displayer:
 
         Returns
         -------
-        fig: figure
+        self.fig: figure
         """
         grouped_data = (
             data.groupby(["Hour", var])
             .agg({"count": agg_method})
             .reset_index()
         )
-        fig = px.line(
+        self.fig = px.line(
             grouped_data,
             x=grouped_data.Hour,
             y="count",
@@ -99,8 +99,8 @@ class Displayer:
         )
         if var in self.legend_to_modify:
             for i, new_name in enumerate(self.plot_legend_dict[var]):
-                fig.data[i].name = new_name
-        return fig
+                self.fig.data[i].name = new_name
+        
 
     def widgets_var_vs_count(self):
         """Widgets associated to the second figure
@@ -145,7 +145,7 @@ class Displayer:
 
         Returns
         -------
-        fig_2: figure
+        self.fig_2: figure
         """
         data_temp = data.copy()
         data_temp["date"] = data_temp["datetime"].dt.date
@@ -159,19 +159,19 @@ class Displayer:
             .reset_index()
         )
 
-        fig_2 = px.bar(grouped_data, x=var_2, y="count")
-        fig_2.update_layout(
+        self.fig_2 = px.bar(grouped_data, x=var_2, y="count")
+        self.fig_2.update_layout(
             yaxis_title=f"{agg_method_2} daily number of users",
             xaxis_title=var_2,
         )
-        fig_2.update_yaxes(type="linear")
-        fig_2.update_xaxes(type="category")
-        fig_2.update_layout(height=600)
+        self.fig_2.update_yaxes(type="linear")
+        self.fig_2.update_xaxes(type="category")
+        self.fig_2.update_layout(height=600)
 
         if var_2 in self.legend_to_modify:
-            for idx in range(len(fig_2.data)):
-                fig_2.data[idx].x = self.plot_legend_dict[var_2]
-        return fig_2
+            for idx in range(len(self.fig_2.data)):
+                self.fig_2.data[idx].x = self.plot_legend_dict[var_2]
+   
 
     def widget_filter(self):
         """
