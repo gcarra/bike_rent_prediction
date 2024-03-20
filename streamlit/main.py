@@ -2,9 +2,10 @@
 # Absolute import
 import duckdb
 from src.path import DATA_DIR
-from plots import *
+from src.env import LEGEND_TO_MODIFY, LINE_PLOT_VARS, PLOT_LEGEND_DICT, VAR_DOC
 
 import streamlit as st
+from plots import Displayer
 
 
 ### App
@@ -21,7 +22,7 @@ class EdaApp(Displayer):
     A Streamlit app
     """
 
-    def __init__(self, path, LINE_PLOT_VARS, PLOT_LEGEND_DICT, VAR_DOC):
+    def __init__(self, path):
         """
         Initialize the app.
         """
@@ -56,7 +57,7 @@ class EdaApp(Displayer):
         var, agg_method = self.widgets_hour_vs_var()
 
         # plot fig 1
-        self.plot_hour_vs_var(data, agg_method, var)
+        self.plot_hour_vs_var(data, var, agg_method)
         st.plotly_chart(
             self.fig, theme="streamlit", use_container_width=True, width=1000
         )
@@ -117,9 +118,7 @@ class EdaApp(Displayer):
                             hide_index=True,
                         )
                     except:
-                        st.dataframe(
-                            data, column_config=df_config, hide_index=True
-                        )
+                        st.dataframe(data, column_config=df_config, hide_index=True)
             else:
                 tab1, tab2 = st.tabs(["'data' table", "queried table"])
             with tab1:
@@ -129,10 +128,7 @@ class EdaApp(Displayer):
 
                     result = duckdb.query(text_query).df()
 
-                    st.dataframe(
-                        result,
-                        column_config=df_config,
-                        hide_index = True)
+                    st.dataframe(result, column_config=df_config, hide_index=True)
                 except:
                     st.write("The SQL query is empty or incorrect")
 
@@ -170,6 +166,7 @@ class EdaApp(Displayer):
         }
         return df_config
 
+
 if __name__ == "__main__":
-    path = DATA_DIR / "raw_data.csv"
-    EdaApp(path, LINE_PLOT_VARS, PLOT_LEGEND_DICT, VAR_DOC)
+    path_data = DATA_DIR / "raw_data.csv"
+    EdaApp(path_data)
