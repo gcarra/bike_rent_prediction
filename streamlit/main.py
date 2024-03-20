@@ -2,7 +2,7 @@
 # Absolute import
 import duckdb
 from src.path import DATA_DIR
-from src.env import LEGEND_TO_MODIFY, LINE_PLOT_VARS, PLOT_LEGEND_DICT, VAR_DOC
+from src.env import VAR_DOC
 
 import streamlit as st
 from plots import Displayer
