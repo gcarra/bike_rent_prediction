@@ -24,18 +24,21 @@ class BaselineModel:
 
         # define weekday attribute
         X_train["weekday"] = (X_train["datetime"]).dt.weekday
+        X_train["Hour"] = (X_train["datetime"]).dt.hour
+        
         Xy = X_train.join(y_train)
         
         # compute the prediction and rename column
-        self.predictor = Xy.groupby("weekday")["count"].median().reset_index()
+        self.predictor = Xy.groupby(["weekday","Hour" ])["count"].median().reset_index()
         self.predictor = self.predictor.rename(columns={"count": "pred_count"})
 
     def predict(self, X_test: pd.DataFrame) -> np.array:
         """This fonction predict using the predictor got
         by fitting"""
         X_test["weekday"] = X_test["datetime"].dt.weekday
+        X_test["Hour"] = X_test["datetime"].dt.hour
 
-        X_test = X_test.merge(self.predictor, how="left", on="weekday")
+        X_test = X_test.merge(self.predictor, how="left", on=["weekday", "Hour"])
 
         return X_test["pred_count"]
 
